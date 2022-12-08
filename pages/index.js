@@ -43,16 +43,6 @@ export async function getStaticProps() {
 }
 console.log(QUERY)
 
-export async function getStaticProps() {
-  const { posts } = await graphcms.request(QUERY);
-  return {
-    props: {
-      posts,
-    },
-    revalidate: 10,
-  };
-}
-
 export default function Home({posts}) {
   return (
     <div className={styles.container}>
