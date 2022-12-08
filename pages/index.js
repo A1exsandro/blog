@@ -3,11 +3,11 @@ import styles from '../styles/Home.module.css'
 import { GraphQLClient, gql } from 'graphql-request'
 import BlogCard from '../components/BlogCard'
 
-const graphcms = new GraphQLClient('https://api-sa-east-1.hygraph.com/v2/clbf71tef0dxu01uj88gg0nrj/master')
+const graphcms = new GraphQLClient("https://api-sa-east-1.hygraph.com/v2/clbf71tef0dxu01uj88gg0nrj/master")
 
 const QUERY = gql`
   {
-    posts{
+    posts {
       id
       title
       datePublished
@@ -22,11 +22,25 @@ const QUERY = gql`
         }
       }
       coverPhoto {
+        publishedAt
+        createdBy {
+          id
+        }
         url
       }
     }
   }
 `;
+
+export async function getStaticProps() {
+  const { posts } = await graphcms.request(QUERY);
+  return {
+    props: {
+      posts,
+    },
+    revalidate: 30,
+  };
+}
 console.log(QUERY)
 
 export async function getStaticProps() {
@@ -35,7 +49,7 @@ export async function getStaticProps() {
     props: {
       posts,
     },
-    revalidate: 50,
+    revalidate: 10,
   };
 }
 
